@@ -65,6 +65,11 @@ CSS – for styling the documentation pages
 
 GitHub Pages – for hosting the documentation live
 
+## 🖼 Preview
+
+![Password Generator Screenshot](assets/preview.png)  
+
+
 ## 📂 Project Structure
 
 Here’s a high-level overview of the important files:
