@@ -81,4 +81,4 @@ Thank you for your interest! This project currently does not accept external con
 
 ## 📄 License
 
-This project is provided for educational and reference purposes. You may use and adapt it as needed in your own learning or documentation work.
+MIT License © Bayardorj Dagdandorj
