@@ -18,7 +18,7 @@ This documentation covers essential PHP topics such as:
 - Security considerations  
 - FAQs and reference examples  
 
-It is designed for learners and developers who want a straightforward reference to common PHP features. :contentReference[oaicite:1]{index=1}
+It is designed for learners and developers who want a straightforward reference to common PHP features.
 
 ---
 
