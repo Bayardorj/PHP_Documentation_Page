@@ -1,0 +1,385 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/icon.png">
+        <title>PHP Documentation</title>
+    </head>
+    <body>
+<!-- Navbar-->
+      <nav id="navbar">
+        <header>PHP Documentation</header>
+        <ul>
+          <li> <a class="nav-link" href="#Introduction">Introduction</a></li>
+          <li> <a class="nav-link" href="#What_can_PHP_do">What can PHP do?</a></li>
+          <li> <a class="nav-link" href="#PHP_tags">PHP tags</a></li>
+          <li> <a class="nav-link" href="#Variables">Variables</a></li>
+          <li> <a class="nav-link"  href="#Variables_From_External_Sources"> External Sources Variables</a></li>
+          <li> <a class="nav-link"  href="#Operator">Operator</a></li>
+          <li> <a class="nav-link"  href="#Classes_Objects">Classes and Objects</a></li>
+          <li> <a class="nav-link"  href="#Exceptions">Exceptions</a></li>
+          <li> <a class="nav-link"  href="#Attributes">Attributes</a></li>
+          <li> <a class="nav-link"  href="#Security">Security</a></li>
+          <li> <a class="nav-link"  href="#FAQ">FAQ</a></li>
+          <li> <a class="nav-link"  href="#Reference">Reference</a></li>
+        
+        </ul>
+      </nav>
+      <main id="main-doc">
+        <section class="main-section" id="Introduction">
+          <header>Introduction</header>
+          <article>
+            <p>PHP (recursive acronym for PHP: Hypertext Preprocessor) is a widely-used open source general-purpose scripting language that is especially suited for web development and can be embedded into HTML.</p> 
+            <p>Instead of lots of commands to output HTML (as seen in C or Perl), PHP pages contain HTML with embedded code that does something. In this case, output: <code>Hi, I'm a PHP script!</code></p>
+            <p>What distinguishes PHP from something like client-side JavaScript is that the code is executed on the server, generating HTML which is then sent to the client. The client would receive the results of running that script, but would not know what the underlying code was. A web server can even be configured to process all HTML files with PHP, and then there's no way that users can tell that PHP is being used.</p>
+          </article>
+        </section>
+        <section class="main-section" id="What_can_PHP_do">
+          <header>What can PHP do?</header>
+          <article>
+            <ul>
+              <li>Server-side scripting. This is the most widely used and main target field for PHP. Three things are needed to make this work: the PHP parser (CGI or server module), a web server, and a web browser. All these can run on a local machine in order to just experiment with PHP programming.</li>
+              <li>Command line scripting. A PHP script can be run without any server or browser, only the PHP parser is needed to use it this way. This type of usage is ideal for scripts regularly executed using cron (on Unix or macOS) or Task Scheduler (on Windows). These scripts can also be used for simple text processing tasks.</li>
+            </ul>
+            <p>So with PHP, developers have the freedom of choosing an operating system and a web server. Furthermore, they also have the choice of using procedural programming or object-oriented programming (OOP), or a mixture of them both.</p>
+          </article>
+        </section>
+        <section class="main-section" id="PHP_tags">
+          <header>PHP tags</header>
+          <article>
+            <p>When PHP processes a file, it recognizes the opening and closing tags to define the boundaries of PHP code execution. Content outside these tags is ignored by the PHP parser, allowing PHP to seamlessly embed in various document types.</p> 
+            <p> A whitespace character (space, tab, or newline) must follow php tag to ensure proper token separation. Omitting this whitespace will result in a syntax error.</p>
+            <p></p> 
+          </article>
+        </section>
+<!-- Variable section-->
+        <section class="main-section" id="Variables">
+          <header>Variables</header>
+          <article>
+            <p>Variables in PHP are represented by a dollar sign followed by the name of the variable. The variable name is case-sensitive.</p>
+<p>A valid variable name starts with a letter (A-Z, a-z, or the bytes from 128 through 255) or underscore, followed by any number of letters, numbers, or underscores. As a regular expression, it would be expressed thus: </p> <code>^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$</code>
+<p>PHP accepts a sequence of any bytes as a variable name. Variable names that do not follow the above-mentioned naming rules can only be accessed dynamically at runtime.</p>
+<h5>Example: Variable property example </h5>
+<pre><code>
+&lt;?php
+class Foo {
+    public $bar = 'I am bar.';
+    public $arr = ['I am A.', 'I am B.', 'I am C.'];
+    public $r   = 'I am r.';
+}
+
+$foo = new Foo();
+$bar = 'bar';
+$baz = ['foo', 'bar', 'baz', 'quux'];
+echo $foo->$bar . "\n";
+echo $foo->{$baz[1]} . "\n";
+
+$start = 'b';
+$end   = 'ar';
+echo $foo->{$start . $end} . "\n";
+
+$arr = 'arr';
+echo $foo->{$arr[1]} . "\n";
+echo $foo->{$arr}[1] . "\n";
+?&gt;
+</code></pre>
+<p>The above example will output:</p>
+<code>I am bar.
+I am bar.
+I am bar.
+I am r.
+I am B.</code>
+
+<h5>Example: Global variable scope  </h5>
+<pre><code>
+&lt;?php
+$a = 1;
+$b = 2;
+
+function Sum()
+{
+    global $a, $b;
+
+    $b = $a + $b;
+} 
+
+Sum();
+echo $b;
+?&gt;
+</code></pre>
+<p>The above example will output:</p>
+<code>3</code>
+
+<h5>References with global and static variables: </h5>
+<p>PHP implements the static and global modifier for variables in terms of references. For example, a true global variable imported inside a function scope with the global statement actually creates a reference to the global variable. This can lead to unexpected behaviour which the following example addresses:</p>
+<pre><code>
+&lt;?php
+function test_global_ref() {
+    global $obj;
+    $new = new stdClass;
+    $obj = &$new;
+}
+
+function test_global_noref() {
+    global $obj;
+    $new = new stdClass;
+    $obj = $new;
+}
+
+test_global_ref();
+var_dump($obj);
+test_global_noref();
+var_dump($obj);
+?&gt;
+</code></pre>
+<p>The above example will output:</p>
+<code>NULL
+object(stdClass)#1 (0) {
+}</code>
+          </article>
+        </section>
+<!-- External sources variable section-->
+        <section class="main-section" id="Variables_From_External_Sources">
+          <header>External Sources Variable</header>
+          <article>
+            <h3>HTML Forms (GET and POST)</h3>
+            <p>When a form is submitted to a PHP script, the information from that form is automatically made available to the script. There are few ways to access this information, for example:</p>
+            <h5>Example: A simple HTML form</h5>
+            <pre><code>
+&lt;form action="foo.php" method="post"&gt;
+    Name:  &lt;input type="text" name="username" /&gt;&lt;br /&gt;
+    Email: &lt;input type="text" name="email" /&gt;&lt;br /&gt;
+    &lt;input type="submit" name="submit" value="Submit me!" /&gt;
+&lt;/form&gt;
+           </code></pre>
+           <p>There are only two ways to access data from HTML forms. Currently available methods are listed below:</p>
+           <h5>Example: Accessing data from a simple POST HTML form</h5>
+           <pre><code>
+?php
+echo $_POST['username'];
+echo $_REQUEST['username'];
+?
+           </code></pre>
+
+           <h5>Example: More complex form variables</h5>
+           <pre><code>
+&lt;?php
+if ($_POST) {
+    echo '&lt;pre&gt;';
+    echo htmlspecialchars(print_r($_POST, true));
+    echo '&lt;/pre&gt;';
+}
+?&gt;
+&lt;form action="" method="post"&gt;
+    Name:  &lt;input type="text" name="personal[name]" /&gt;&lt;br /&gt;
+    Email: &lt;input type="text" name="personal[email]" /&gt;&lt;br /&gt;
+    Beer: &lt;br /&gt;
+    &lt;select multiple name="beer[]"&gt;
+        &lt;option value="warthog"&gt;Warthog&lt;/option&gt;
+        &lt;option value="guinness"&gt;Guinness&lt;/option&gt;
+        &lt;option value="stuttgarter"&gt;Stuttgarter Schwabenbräu&lt;/option&gt;
+    &lt;/select&gt;&lt;br /&gt;
+    &lt;input type="submit" value="submit me!" /&gt;
+&lt;/form&gt;
+</code></pre>
+          </article>
+        </section>
+<!-- Operator section-->
+ <section class="main-section" id="Operator">
+          <header>Operator</header>
+          <article>
+            <p>An operator is something that takes one or more values (or expressions, in programming jargon) and yields another value (so that the construction itself becomes an expression).</p>
+            <p>Operators can be grouped according to the number of values they take. Unary operators take only one value, for example ! (the logical not operator) or ++ (the increment operator). Binary operators take two values, such as the familiar arithmetical operators + (plus) and - (minus), and the majority of PHP operators fall into this category. Finally, there is a single ternary operator, ? :, which takes three values; this is usually referred to simply as "the ternary operator" (although it could perhaps more properly be called the conditional operator).</p>
+            <p>PHP divides the operators in the following groups:</p>
+            <ul>
+              <li>Arithmetic operators</li>
+              <li>Assignment operators</li>
+              <li>Comparison operators</li>
+              <li>Increment/Decrement operators</li>
+              <li>Logical operators</li>
+              <li>String operators</li>
+              <li>Array operators</li>
+              <li>Conditional operators</li>
+            </ul>
+          </article>
+  </section>
+<!-- Classes and Objects section-->
+  <section class="main-section" id="Classes_Objects">
+          <header>Classes and Objects</header>
+          <article>
+            <p>PHP includes a complete object model. Some of its features are: visibility, abstract and final classes and methods, additional magic methods, interfaces, and cloning.</p>
+            <p>PHP treats objects in the same way as references or handles, meaning that each variable contains an object reference rather than a copy of the entire object.</p>
+            <h3>Class</h3>
+            <p>Basic class definitions begin with the keyword class, followed by a class name, followed by a pair of curly braces which enclose the definitions of the properties and methods belonging to the class.</p>
+            <p>The class name can be any valid label, provided it is not a PHP reserved word. As of PHP 8.4.0, using a single underscore _ as a class name is deprecated. A valid class name starts with a letter or underscore, followed by any number of letters, numbers, or underscores. As a regular expression, it would be expressed thus: ^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$.</p>
+            <p>A class may contain its own constants, variables (called "properties"), and functions (called "methods").</p>
+            <h5>Example: Simple Class definition</h5>
+            <pre><code>
+&lt;?php
+class SimpleClass
+{
+    // property declaration
+    public $var = 'a default value';
+
+    // method declaration
+    public function displayVar() {
+        echo $this->var;
+    }
+}
+?&gt;
+</code></pre>
+          
+          <h3>Objects</h3>
+          <p>To create an instance of a class, the new keyword must be used. An object will always be created unless the object has a constructor defined that throws an exception on error. Classes should be defined before instantiation (and in some cases this is a requirement).</p>
+          <p>If a variable containing a string with the name of a class is used with new, a new instance of that class will be created. If the class is in a namespace, its fully qualified name must be used when doing this.</p>  
+          <h5>Example: Creating an instance</h5>
+          <pre><code>
+&lt;?php
+class SimpleClass {
+}
+
+$instance = new SimpleClass();
+var_dump($instance);
+
+// This can also be done with a variable:
+$className = 'SimpleClass';
+$instance = new $className(); // new SimpleClass()
+var_dump($instance);
+?&gt;
+         </code></pre>
+         <p>Output of the above example in PHP 8.5.0:</p>
+         <code>object(SimpleClass)#1 (0) {
+}
+object(SimpleClass)#2 (0) {
+}</code>
+        </article>
+  </section>
+<!-- Exceptions section-->
+  <section class="main-section" id="Exceptions">
+          <header>Exceptions</header>
+          <article>
+            <p>PHP has an exception model similar to that of other programming languages. An exception can be thrown, and caught ("catched") within PHP. Code may be surrounded in a try block, to facilitate the catching of potential exceptions. Each try must have at least one corresponding catch or finally block.</p>
+            <p>If an exception is thrown and its current function scope has no catch block, the exception will "bubble up" the call stack to the calling function until it finds a matching catch block. All finally blocks it encounters along the way will be executed. If the call stack is unwound all the way to the global scope without encountering a matching catch block, the program will terminate with a fatal error unless a global exception handler has been set.</p>
+            <p>As of PHP 8.0.0, the throw keyword is an expression and may be used in any expression context. In prior versions it was a statement and was required to be on its own line.</p>
+            <p>If an exception is allowed to bubble up to the global scope, it may be caught by a global exception handler if set. The set_exception_handler() function can set a function that will be called in place of a catch block if no other block is invoked. The effect is essentially the same as if the entire program were wrapped in a try-catch block with that function as the catch.</p>
+          </article>
+  </section>
+<!-- Attributes section-->
+  <section class="main-section" id="Attributes">
+          <header>Attributes</header>
+          <article>
+           <p>PHP attributes provide structured, machine-readable metadata for classes, methods, functions, parameters, properties, and constants. They can be inspected at runtime via the Reflection API, enabling dynamic behavior without modifying code. Attributes provide a declarative way to annotate code with metadata.</p>
+           <p>Attributes enable the decoupling of a feature's implementation from its usage. While interfaces define structure by enforcing methods, attributes provide metadata across multiple elements, including methods, functions, properties, and constants. Unlike interfaces, which enforce method implementations, attributes annotate code without altering its structure.</p>
+           <p>Attributes can complement or replace optional interface methods by providing metadata instead of enforced structure. Consider an ActionHandler interface that represents an operation in an application. Some implementations may require a setup step while others do not. Instead of forcing all classes implementing ActionHandler to define a setUp() method, an attribute can indicate setup requirements. This approach increases flexibility, allowing attributes to be applied multiple times when necessary.</p>
+           <h5>Example: Implementing optional methods of an interface with Attributes</h5>
+           <pre><code>
+&lt;?php
+interface ActionHandler
+{
+    public function execute();
+}
+
+#[Attribute]
+class SetUp {}
+
+class CopyFile implements ActionHandler
+{
+    public string $fileName;
+    public string $targetDirectory;
+
+    #[SetUp]
+    public function fileExists()
+    {
+        if (!file_exists($this->fileName)) {
+            throw new RuntimeException("File does not exist");
+        }
+    }
+
+    #[SetUp]
+    public function targetDirectoryExists()
+    {
+        if (!file_exists($this->targetDirectory)) {
+            mkdir($this->targetDirectory);
+        } elseif (!is_dir($this->targetDirectory)) {
+            throw new RuntimeException("Target directory $this->targetDirectory is not a directory");
+        }
+    }
+
+    public function execute()
+    {
+        copy($this->fileName, $this->targetDirectory . '/' . basename($this->fileName));
+    }
+}
+
+function executeAction(ActionHandler $actionHandler)
+{
+    $reflection = new ReflectionObject($actionHandler);
+
+    foreach ($reflection->getMethods() as $method) {
+        $attributes = $method->getAttributes(SetUp::class);
+
+        if (count($attributes) &gt; 0) {
+            $methodName = $method->getName();
+
+            $actionHandler-&gt;$methodName();
+        }
+    }
+
+    $actionHandler-&gt;execute();
+}
+
+$copyAction = new CopyFile();
+$copyAction-&gt;fileName = "/tmp/foo.jpg";
+$copyAction-&gt;targetDirectory = "/home/user";
+
+executeAction($copyAction);
+</code></pre>
+          </article>
+  </section>
+<!-- Security section-->
+ <section class="main-section" id="Security">
+          <header>Security</header>
+          <article>
+            <p>PHP is a powerful language and the interpreter, whether included in a web server as a module or executed as a separate CGI binary, is able to access files, execute commands and open network connections on the server. These properties make anything run on a web server insecure by default. PHP is designed specifically to be a more secure language for writing CGI programs than Perl or C, and with correct selection of compile-time and runtime configuration options, and proper coding practices, it can give you exactly the combination of freedom and security you need.</p>
+            <p>As there are many different ways of utilizing PHP, there are many configuration options controlling its behaviour. A large selection of options guarantees you can use PHP for a lot of purposes, but it also means there are combinations of these options and server configurations that result in an insecure setup.</p>
+            <p>The configuration flexibility of PHP is equally rivalled by the code flexibility. PHP can be used to build complete server applications, with all the power of a shell user, or it can be used for simple server-side includes with little risk in a tightly controlled environment. How you build that environment, and how secure it is, is largely up to the PHP developer.</p>
+          </article>
+  </section>
+
+<!-- FAQ section-->
+        <section class="main-section" id="FAQ">
+          <header>FAQ</header>
+          <article>
+            <p>This section holds the most general questions about PHP: what it is and what it does.</p>
+            <h5>What is PHP? </h5>
+            <p>PHP is an HTML-embedded scripting language. Much of its syntax is borrowed from C, Java and Perl with a couple of unique PHP-specific features thrown in. The goal of the language is to allow web developers to write dynamically generated pages quickly.</p>
+            
+            <h5>What does PHP stand for?</h5>
+            <p>PHP stands for PHP: Hypertext Preprocessor. This confuses many people because the first word of the acronym is the acronym. This type of acronym is called a recursive acronym.</p>
+
+            <h5>What is the relation between the versions?</h5>
+            <p>PHP/FI 2.0 is an early and no longer supported version of PHP. PHP 3 is the successor to PHP/FI 2.0 and is a lot nicer. PHP 8 is the current generation of PHP, which uses the Zend engine 4 which, among other things, offers many additional <a href="https://www.php.net/manual/en/language.oop5.php" target="_blank">OOP</a> features.</p>
+
+            <h5>Can I run several versions of PHP at the same time?</h5>
+            <p>Yes. See the INSTALL file that is included in the PHP source distribution.</p>
+
+            <h5>I think I found a bug! Who should I tell?</h5>
+            <p>You should go to the PHP Bug Database and make sure the bug isn't a known bug. If you don't see it in the database, use the reporting form to report the bug. It is important to use the bug database instead of just sending an email to one of the mailing lists because the bug will have a tracking number assigned and it will then be possible for you to go back later and check on the status of the bug. The bug database can be found at <a href="https://github.com/php/php-src/issues" target="_blank"> >> https://github.com/php/php-src/issues</a></p>
+          </article>
+        </section>
+<!-- Reference section-->
+        <section class="main-section" id="Reference">
+          <header>Reference</header>
+          <article>
+            <ul>
+              <li>All the documentation in this page is taken from <a href="https://www.php.net/" target="_blank">www.php.net </a> and <a href="https://www.w3schools.com/php/default.asp" target="_blank">https://www.w3schools.com/php/default.asp</a>
+              </li>
+            </ul>              
+          </article>
+        </section>
+      </main>
+      
+
+    </body>
+
+</html>

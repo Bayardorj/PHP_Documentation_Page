@@ -1,0 +1,31 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnail cache files
+._*
+
+# VS Code settings
+.vscode/
+
+# Node environment (if you ever add JS tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build artifacts (if added later)
+dist/
+build/
+
+# Environment variables
+.env
+.env.*
